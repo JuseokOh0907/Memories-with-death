@@ -41,7 +41,7 @@
 MetroidVania.asmdef     어셈블리 하나 (Unity.InputSystem 참조), namespace MetroidVania
 CameraFollow            추적 · 앞 공간 · 수직 데드존(위 2 / 아래 0.5) · BoxCollider2D 경계 · SnapToTarget()
 Player/
-  PlayerTuning          조작감 수치 전부 (SO). 점프는 높이 3.5 · 정점 0.4초로 입력 → 중력 역산
+  PlayerTuning          조작감 수치 전부 (SO). 점프는 높이 · 정점 시간으로 입력 → 중력 역산
   PlayerInputReader     InputSystem.actions 를 읽음. 누름은 Consume, UI 용 SetBlocked()
   PlayerMotor           감지 + 속도 적용. 자체 FixedUpdate 없음
   PlayerController      enum 상태기계 (Grounded·Rising·Falling 구현, Dashing·Hurt·Dead 는 자리만)
@@ -60,6 +60,8 @@ Player/
 
 - 원문 §3 을 따른다: 매일 실행 가능한 상태 유지, 구현 완료와 **실제 플레이 검증 완료를 구분해 보고**한다.
 - 수치를 바꾸면 이유와 최종값을 기록한다 (원문 §3-4, §12-5).
+- **아트·맵이 나오기 전에는 점프 거리 같은 수치 계산을 미리 하지 않는다** (2026-10-26).
+  점프 관련 값은 플레이 감각으로 조정하는 것이 지금 할 일이다.
 - `.unity` 씬과 `.prefab` 은 텍스트로 직접 편집하지 않는다. Unity 에디터 안의 조립은 사용자가 직접 하므로
   **절차서(Hierarchy 계층과 컴포넌트를 빠짐없이)** 를 `docs/guides/` 에 쓴다.
 - `.meta` 를 임의로 만들거나 지우지 않는다. 옮길 때는 파일과 쌍으로.
