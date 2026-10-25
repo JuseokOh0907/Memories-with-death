@@ -35,6 +35,10 @@
 
 상세 근거: [`docs/decisions/001-character-structure.md`](docs/decisions/001-character-structure.md)
 
+**공격·점프 정점** ([`002`](docs/decisions/002-attack-and-apex.md)) — 공격은 이동 상태를 기다리지 않고 즉시 나간다.
+상승 중 공격하면 그 지점이 최고 높이가 되고(수직 속도 0), 정점 구간에서는 중력이 약해진다.
+**하강 중력 수치는 사용자 자료를 기다리는 중.** 범위 밖 아이디어는 [`docs/BACKLOG.md`](docs/BACKLOG.md).
+
 ### `Assets/Scripts/` (2026-10-26)
 
 ```

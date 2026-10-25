@@ -23,8 +23,14 @@ namespace MetroidVania
         [Min(0.1f)] public float jumpHeight = 3.5f;
         [Tooltip("정점까지 걸리는 시간 (초). 중력과 초기 속도가 여기서 계산된다")]
         [Min(0.05f)] public float timeToApex = 0.4f;
-        [Tooltip("하강 중 중력 배율. 1 보다 크면 내려올 때 더 빠르다")]
+        [Tooltip("하강 중 중력 배율. 1 보다 크면 내려올 때 더 빠르다 (임시값 — 하강 중력 자료를 받아 교체)")]
         [Min(1f)] public float fallGravityMultiplier = 1.5f;
+
+        [Header("정점 — 공중 공격 지점도 여기에 들어온다")]
+        [Tooltip("수직 속도의 크기가 이보다 작으면 정점 구간으로 본다 (유닛/초). 0 이면 끈다")]
+        [Min(0f)] public float apexSpeedThreshold = 2f;
+        [Tooltip("정점 구간의 중력 배율. 1 보다 작으면 최고점에서 잠깐 머문다. 하강 배율보다 우선한다")]
+        [Range(0f, 1f)] public float apexGravityMultiplier = 0.5f;
         [Tooltip("상승 중 버튼을 떼면 남은 상승 속도에 곱한다. 작을수록 짧게 끊긴다")]
         [Range(0f, 1f)] public float jumpCutFactor = 0.45f;
         [Min(0f)] public float maxFallSpeed = 20f;

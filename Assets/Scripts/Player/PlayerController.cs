@@ -29,6 +29,9 @@ namespace MetroidVania
         private float coyoteTimer;
         private float jumpBufferTimer;
         private bool jumpCut;
+        // 점프로 뜬 공중에서만 정점 구간을 쓴다. 발판에서 걸어 나가면 속도 0 에서 시작하므로
+        // 이게 없으면 모서리마다 잠깐 떠 있게 된다. 천장에 부딪혀도 끈다.
+        private bool apexEnabled;
 
         public PlayerState State { get; private set; } = PlayerState.Falling;
         public int Facing { get; private set; } = 1;
@@ -98,10 +101,13 @@ namespace MetroidVania
                 jumpCut = true;
             }
 
-            motor.ApplyGravity(tuning.Gravity, dt);
+            motor.ApplyGravity(AirGravity(), dt);
 
             if (motor.HitCeiling)
+            {
                 motor.SetVerticalVelocity(0f);
+                apexEnabled = false;
+            }
             if (motor.Velocity.y <= 0f)
                 State = PlayerState.Falling;
         }
@@ -113,11 +119,12 @@ namespace MetroidVania
             if (TryJump())
                 return;
 
-            motor.ApplyGravity(tuning.Gravity * tuning.fallGravityMultiplier, dt);
+            motor.ApplyGravity(AirGravity(), dt);
 
             if (motor.IsGrounded)
             {
                 State = PlayerState.Grounded;
+                apexEnabled = false;
                 TryJump();  // 착지 직전에 누른 점프를 이 스텝에서 바로 쓴다
             }
         }
@@ -131,8 +138,21 @@ namespace MetroidVania
             jumpBufferTimer = 0f;
             coyoteTimer = 0f;
             jumpCut = false;
+            apexEnabled = true;
             State = PlayerState.Rising;
             return true;
+        }
+
+        /// <summary>
+        /// 정점 구간 → 하강 → 상승 순으로 고른다. 공중 공격은 수직 속도를 0 으로 만들어
+        /// 같은 정점 구간에 들어오므로 따로 처리하지 않는다 (decisions/002).
+        /// </summary>
+        private float AirGravity()
+        {
+            float vy = motor.Velocity.y;
+            if (apexEnabled && Mathf.Abs(vy) < tuning.apexSpeedThreshold)
+                return tuning.Gravity * tuning.apexGravityMultiplier;
+            return vy < 0f ? tuning.Gravity * tuning.fallGravityMultiplier : tuning.Gravity;
         }
 
         private void UpdateFacing()
