@@ -33,7 +33,30 @@
 | 상태 구조 | **`PlayerController` 안의 enum 상태기계 한 곳** (지상·상승·하강·대시·피격·사망) | 1주 범위·6상태에 충분. 불필요한 추상화 금지 (원문 §9) |
 | 기존 `CharacterMoveBase.cs` | 삭제 (레거시 Input 사용, 힘 기반 이동이 "빠른 가속·정지" 요구와 맞지 않음) | |
 
-## 4. 작업 규칙
+상세 근거: [`docs/decisions/001-character-structure.md`](docs/decisions/001-character-structure.md)
+
+### `Assets/Scripts/` (2026-10-26)
+
+```
+MetroidVania.asmdef     어셈블리 하나 (Unity.InputSystem 참조), namespace MetroidVania
+CameraFollow            추적 · 앞 공간 · 수직 데드존(위 2 / 아래 0.5) · BoxCollider2D 경계 · SnapToTarget()
+Player/
+  PlayerTuning          조작감 수치 전부 (SO). 점프는 높이 3.5 · 정점 0.4초로 입력 → 중력 역산
+  PlayerInputReader     InputSystem.actions 를 읽음. 누름은 Consume, UI 용 SetBlocked()
+  PlayerMotor           감지 + 속도 적용. 자체 FixedUpdate 없음
+  PlayerController      enum 상태기계 (Grounded·Rising·Falling 구현, Dashing·Hurt·Dead 는 자리만)
+  PlayerDebugHud        개발용 OnGUI 상태 표시
+```
+
+## 4. 진행 상태
+
+> 마지막 갱신 2026-10-26. 실행해서 확인한 것만 "동작함" 으로 옮긴다.
+
+- **1일차 코드 작성 완료 · 컴파일 확인 · 플레이 검증 안 됨.**
+  씬 조립 절차 [`docs/guides/day1-player-setup.md`](docs/guides/day1-player-setup.md), 끝에 확인 목록이 있다
+- 입력 액션에 `Dash`(K · Left Shift · RB) 추가, `Attack` 에 J 추가. Status·Pause 는 4일차
+
+## 5. 작업 규칙
 
 - 원문 §3 을 따른다: 매일 실행 가능한 상태 유지, 구현 완료와 **실제 플레이 검증 완료를 구분해 보고**한다.
 - 수치를 바꾸면 이유와 최종값을 기록한다 (원문 §3-4, §12-5).
