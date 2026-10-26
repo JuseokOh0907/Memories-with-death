@@ -50,6 +50,8 @@ Player/
   PlayerMotor           감지 + 속도 적용. 자체 FixedUpdate 없음
   PlayerController      enum 상태기계 (Grounded·Rising·Falling 구현, Dashing·Hurt·Dead 는 자리만)
   PlayerDebugHud        개발용 OnGUI 상태 표시
+Soul/
+  SoulController        물리 없는 영혼. 플레이어 뒤 → 좌클릭 지점 이동·머묾 → 우클릭 순간 복귀 (decisions/003)
 ```
 
 ## 4. 진행 상태
@@ -59,6 +61,8 @@ Player/
 - **1일차 코드 작성 완료 · 컴파일 확인 · 플레이 검증 안 됨.**
   씬 조립 절차 [`docs/guides/day1-player-setup.md`](docs/guides/day1-player-setup.md), 끝에 확인 목록이 있다
 - 입력 액션에 `Dash`(K · Left Shift · RB) 추가, `Attack` 에 J 추가. Status·Pause 는 4일차
+- **영혼 코드 작성 · 컴파일 확인 · 플레이 검증 안 됨.** 절차 [`docs/guides/soul-setup.md`](docs/guides/soul-setup.md).
+  입력 `SoulMove`(좌클릭) · `SoulRecall`(우클릭) · `Point` 추가, **좌클릭은 `Attack` 에서 뺐다**
 
 ## 5. 작업 규칙
 
