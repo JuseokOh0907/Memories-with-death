@@ -6,6 +6,7 @@ namespace MetroidVania
     /// 플레이어에게 붙어 다니는 영혼. 물리 바깥에서 움직인다 — 벽을 지나고 플레이어를 밀지 않는다.
     /// 평소에는 플레이어 살짝 뒤에 떠 있고, 좌클릭하면 그 지점으로 날아가 머문다.
     /// 우클릭하면 플레이어 뒤로 순간이동해 다시 따라다닌다.
+    /// 플레이어와 maxDistance 보다 멀어지면 스스로 날아서 돌아온다.
     /// </summary>
     public class SoulController : MonoBehaviour
     {
@@ -32,13 +33,20 @@ namespace MetroidVania
         [Tooltip("목표와 이만큼 가까워지면 도착으로 본다")]
         [SerializeField, Min(0.001f)] private float arriveDistance = 0.02f;
 
+        [Header("거리 제한")]
+        [Tooltip("플레이어와 이보다 멀어지면 스스로 날아서 뒤 자리로 돌아온다. " +
+                 "이보다 먼 곳을 클릭하면 이 반경 끝까지만 간다")]
+        [SerializeField, Min(0.5f)] private float maxDistance = 8f;
+
         private PlayerInputReader input;
         private Mode mode;
         private Vector2 target;
         private Vector2 velocity;
 
+        private Vector2 PlayerPosition => player.transform.position;
+
         private Vector2 RestPoint =>
-            (Vector2)player.transform.position + new Vector2(-player.Facing * restOffset.x, restOffset.y);
+            PlayerPosition + new Vector2(-player.Facing * restOffset.x, restOffset.y);
 
         private void Awake()
         {
@@ -70,6 +78,11 @@ namespace MetroidVania
             float dt = Time.deltaTime;
             Vector2 pos = transform.position;
 
+            // 플레이어가 멀어진 경우다. 클릭 목표는 반경 안으로 잘라 두므로 클릭만으로는 여기 오지 않는다.
+            // 순간이동(우클릭)과 구분되게 날아서 돌아온다.
+            if (mode != Mode.Following && (pos - PlayerPosition).sqrMagnitude > maxDistance * maxDistance)
+                mode = Mode.Following;
+
             switch (mode)
             {
                 case Mode.Following:
@@ -90,10 +103,14 @@ namespace MetroidVania
             transform.position = new Vector3(pos.x, pos.y, transform.position.z);
         }
 
-        /// <summary>지정한 월드 지점으로 날아가 머문다. 가는 도중에 다시 부르면 목표만 바뀐다.</summary>
+        /// <summary>
+        /// 지정한 월드 지점으로 날아가 머문다. 가는 도중에 다시 부르면 목표만 바뀐다.
+        /// 거리 제한 밖이면 반경 끝까지만 간다 — 가다가 제한에 걸려 되돌아오는 일이 없게.
+        /// </summary>
         public void MoveTo(Vector2 worldPoint)
         {
-            target = worldPoint;
+            Vector2 center = PlayerPosition;
+            target = center + Vector2.ClampMagnitude(worldPoint - center, maxDistance);
             mode = Mode.Moving;
         }
 
