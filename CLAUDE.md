@@ -51,7 +51,8 @@ Player/
   PlayerController      enum 상태기계 (Grounded·Rising·Falling 구현, Dashing·Hurt·Dead 는 자리만)
   PlayerDebugHud        개발용 OnGUI 상태 표시
 Soul/
-  SoulController        물리 없는 영혼. 플레이어 뒤 → 좌클릭 지점 이동·머묾 → 우클릭 순간 복귀 (decisions/003)
+  SoulController        물리 없는 영혼. 플레이어 뒤 → 좌클릭 지점 이동·머묾 → 우클릭 순간 복귀.
+                        화면 밖 이동 불가, 사정거리 이탈 시 즉시 재부착(오리아나식) (decisions/003)
 ```
 
 ## 4. 진행 상태

@@ -6,7 +6,7 @@ namespace MetroidVania
     /// 플레이어에게 붙어 다니는 영혼. 물리 바깥에서 움직인다 — 벽을 지나고 플레이어를 밀지 않는다.
     /// 평소에는 플레이어 살짝 뒤에 떠 있고, 좌클릭하면 그 지점으로 날아가 머문다.
     /// 우클릭하면 플레이어 뒤로 순간이동해 다시 따라다닌다.
-    /// 플레이어와 maxDistance 보다 멀어지면 스스로 날아서 돌아온다.
+    /// 화면 밖으로는 갈 수 없고, 사정거리(반경·화면)를 벗어나면 오리아나 구체처럼 즉시 다시 붙는다.
     /// </summary>
     public class SoulController : MonoBehaviour
     {
@@ -33,10 +33,14 @@ namespace MetroidVania
         [Tooltip("목표와 이만큼 가까워지면 도착으로 본다")]
         [SerializeField, Min(0.001f)] private float arriveDistance = 0.02f;
 
-        [Header("거리 제한")]
-        [Tooltip("플레이어와 이보다 멀어지면 스스로 날아서 뒤 자리로 돌아온다. " +
+        [Header("사정거리 — 반경과 화면 둘 다")]
+        [Tooltip("플레이어와 이보다 멀어지면 즉시 플레이어 뒤로 다시 붙는다. " +
                  "이보다 먼 곳을 클릭하면 이 반경 끝까지만 간다")]
         [SerializeField, Min(0.5f)] private float maxDistance = 8f;
+        [Tooltip("클릭 이동은 화면 가장자리에서 이만큼 안쪽까지만 간다. 카메라가 움직여 영혼이 화면 밖으로 나가면 다시 붙는다")]
+        [SerializeField, Min(0f)] private float screenMargin = 0.5f;
+
+        private const float BoundaryInset = 0.05f;
 
         private PlayerInputReader input;
         private Mode mode;
@@ -78,10 +82,13 @@ namespace MetroidVania
             float dt = Time.deltaTime;
             Vector2 pos = transform.position;
 
-            // 플레이어가 멀어진 경우다. 클릭 목표는 반경 안으로 잘라 두므로 클릭만으로는 여기 오지 않는다.
-            // 순간이동(우클릭)과 구분되게 날아서 돌아온다.
-            if (mode != Mode.Following && (pos - PlayerPosition).sqrMagnitude > maxDistance * maxDistance)
-                mode = Mode.Following;
+            // 사정거리 이탈 — 오리아나 구체처럼 날아오지 않고 즉시 플레이어에 다시 붙는다.
+            // 클릭 목표는 반경·화면 안으로 잘라 두므로 이 경우는 플레이어(와 카메라)가 움직였을 때만 생긴다.
+            if (mode != Mode.Following && IsOutOfRange(pos))
+            {
+                Recall();
+                return;
+            }
 
             switch (mode)
             {
@@ -105,12 +112,20 @@ namespace MetroidVania
 
         /// <summary>
         /// 지정한 월드 지점으로 날아가 머문다. 가는 도중에 다시 부르면 목표만 바뀐다.
-        /// 거리 제한 밖이면 반경 끝까지만 간다 — 가다가 제한에 걸려 되돌아오는 일이 없게.
+        /// 사정거리 밖이면 반경 끝까지, 화면 밖이면 화면 가장자리까지만 간다
+        /// — 가다가 사정거리 이탈로 붙어 버리는 일이 없게.
         /// </summary>
         public void MoveTo(Vector2 worldPoint)
         {
             Vector2 center = PlayerPosition;
-            target = center + Vector2.ClampMagnitude(worldPoint - center, maxDistance);
+            // 경계에 딱 맞추면 도착하자마자 부동소수 오차로 이탈 판정이 날 수 있어 살짝 안쪽으로 자른다.
+            Vector2 point = center + Vector2.ClampMagnitude(worldPoint - center, maxDistance - BoundaryInset);
+
+            Rect view = VisibleRect(screenMargin);
+            point.x = Mathf.Clamp(point.x, view.xMin, view.xMax);
+            point.y = Mathf.Clamp(point.y, view.yMin, view.yMax);
+
+            target = point;
             mode = Mode.Moving;
         }
 
@@ -121,6 +136,22 @@ namespace MetroidVania
             transform.position = new Vector3(rest.x, rest.y, transform.position.z);
             velocity = Vector2.zero;
             mode = Mode.Following;
+        }
+
+        /// <summary>
+        /// 사정거리는 반경과 화면 둘 다다. 화면은 여백 없이 실제 가장자리로 판정한다 —
+        /// 이동은 여백 안쪽까지만 하므로 그 차이만큼 여유가 생겨 경계에서 깜빡이지 않는다.
+        /// </summary>
+        private bool IsOutOfRange(Vector2 pos) =>
+            (pos - PlayerPosition).sqrMagnitude > maxDistance * maxDistance || !VisibleRect(0f).Contains(pos);
+
+        /// <summary>카메라에 보이는 월드 영역에서 inset 만큼 안쪽.</summary>
+        private Rect VisibleRect(float inset)
+        {
+            float halfH = worldCamera.orthographicSize - inset;
+            float halfW = worldCamera.orthographicSize * worldCamera.aspect - inset;
+            Vector2 c = worldCamera.transform.position;
+            return Rect.MinMaxRect(c.x - halfW, c.y - halfH, c.x + halfW, c.y + halfH);
         }
 
         private Vector2 ScreenToWorld(Vector2 screen) =>
