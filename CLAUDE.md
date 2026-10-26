@@ -3,7 +3,8 @@
 > Claude Code 가 세션마다 자동으로 읽습니다.
 > 1주차 요구사항 원문은 [`docs/week1_mvp_handoff.md`](docs/week1_mvp_handoff.md) — 기능·수치·검증표는 그 문서가 기준입니다.
 
-- 로컬 경로: `C:\Git\MetroidVania` (git 초기화 2026-10-26, 원격 저장소 아직 없음)
+- 로컬 경로: `C:\Git\MetroidVania` (git 초기화 2026-10-26)
+- 저장소: `https://github.com/JuseokOh0907/Memories-with-death` — **로컬 폴더 이름과 저장소 이름이 다르다**
 - `C:\Git` 의 형제 프로젝트(Pretty_Knights 등)는 건드리지 않습니다.
 - 기획 원본 자료: `C:\GameMake\Documents` (동화 자료 `C:\GameMake\_work\fairy_tales`). 이 폴더들은 구현 저장소가 아닙니다.
 
