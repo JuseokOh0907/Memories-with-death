@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4276b8eebde863845acc34904b915ed1, type: 3}
+  m_Name: PlayerTuning
+  m_EditorClassIdentifier: MetroidVania::MetroidVania.PlayerTuning
+  maxRunSpeed: 8
+  groundAcceleration: 80
+  groundDeceleration: 100
+  airAcceleration: 50
+  airDeceleration: 25
+  jumpHeight: 3.5
+  timeToApex: 0.4
+  fallGravityMultiplier: 1.5
+  apexSpeedThreshold: 2
+  apexGravityMultiplier: 0.5
+  jumpCutFactor: 0.45
+  maxFallSpeed: 20
+  coyoteTime: 0.1
+  jumpBufferTime: 0.1
+  probeDistance: 0.05
+  minGroundNormalY: 0.7
