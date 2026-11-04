@@ -6,12 +6,13 @@ namespace MetroidVania
     /// 플레이어를 부드럽게 따라가되 맵 경계 밖은 보여주지 않는다.
     /// 수평은 바라보는 쪽으로 앞 공간을 더 보여주고,
     /// 수직은 착지했을 때나 데드존을 벗어났을 때만 따라가 작은 점프에 화면이 출렁이지 않는다.
+    /// 플레이어에 PlayerRoomTracker 가 있으면 현재 방의 범위가 경계가 된다.
     /// </summary>
     [RequireComponent(typeof(Camera))]
     public class CameraFollow : MonoBehaviour
     {
         [SerializeField] private PlayerController target;
-        [Tooltip("비워 두면 경계 없이 따라간다. Is Trigger 를 켠 BoxCollider2D 로 맵 범위를 그린다")]
+        [Tooltip("방에 들어가기 전에 쓸 경계. 방(Room)이 있으면 방 범위로 바뀐다. 비우면 경계 없이 따라간다")]
         [SerializeField] private BoxCollider2D bounds;
 
         [Header("구도")]
@@ -34,9 +35,37 @@ namespace MetroidVania
         private float baseY;    // 수직 추적 기준선 (플레이어 발 높이)
         private Vector2 smoothVelocity;
 
+        private PlayerRoomTracker rooms;
+
         private void Awake() => cam = GetComponent<Camera>();
 
-        private void Start() => SnapToTarget();
+        private void Start()
+        {
+            if (target != null && target.TryGetComponent(out rooms))
+            {
+                rooms.RoomChanged += OnRoomChanged;
+                if (rooms.Current != null)
+                    bounds = rooms.Current.Area;
+            }
+            SnapToTarget();
+        }
+
+        private void OnDestroy()
+        {
+            if (rooms != null)
+                rooms.RoomChanged -= OnRoomChanged;
+        }
+
+        /// <summary>
+        /// 방을 옮기면 경계만 바꾼다. 원하는 위치가 바뀌므로 SmoothDamp 가 새 방으로 부드럽게 옮겨 간다.
+        /// 첫 진입(시작 직후)은 날아가지 않게 바로 맞춘다.
+        /// </summary>
+        private void OnRoomChanged(Room previous, Room current)
+        {
+            bounds = current.Area;
+            if (previous == null)
+                SnapToTarget();
+        }
 
         private void LateUpdate()
         {

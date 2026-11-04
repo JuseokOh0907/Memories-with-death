@@ -12,9 +12,14 @@ namespace MetroidVania
         [SerializeField] private bool show = true;
 
         private PlayerController controller;
+        private PlayerRoomTracker rooms;
         private GUIStyle style;
 
-        private void Awake() => controller = GetComponent<PlayerController>();
+        private void Awake()
+        {
+            controller = GetComponent<PlayerController>();
+            rooms = GetComponent<PlayerRoomTracker>();
+        }
 
         private void OnGUI()
         {
@@ -32,9 +37,10 @@ namespace MetroidVania
                 $"Velocity ({v.x:0.00}, {v.y:0.00})\n" +
                 $"Facing   {controller.Facing}\n" +
                 $"Coyote   {Mathf.Max(0f, controller.CoyoteTimer):0.000}\n" +
-                $"Buffer   {Mathf.Max(0f, controller.JumpBufferTimer):0.000}";
+                $"Buffer   {Mathf.Max(0f, controller.JumpBufferTimer):0.000}\n" +
+                $"Room     {(rooms != null && rooms.Current != null ? rooms.Current.Id : "-")}";
 
-            GUI.Box(new Rect(Screen.width - 330, 10, 320, 170), text, style);
+            GUI.Box(new Rect(Screen.width - 330, 10, 320, 192), text, style);
         }
     }
 }

@@ -40,6 +40,10 @@
 상승 중 공격하면 그 지점이 최고 높이가 되고(수직 속도 0), 정점 구간에서는 중력이 약해진다.
 **하강 중력 수치는 사용자 자료를 기다리는 중.** 범위 밖 아이디어는 [`docs/BACKLOG.md`](docs/BACKLOG.md).
 
+**맵** ([`004`](docs/decisions/004-map-structure.md)) — 지형은 Tilemap `Solid` 한 장 + CompositeCollider2D(Outlines).
+방은 충돌이 아니라 `Room` 트리거로 나눈다. **막는 곡선은 Sprite Shape 를 `Solid` 의 자식으로 Merge**,
+**밟는 곡선은 만들지 않는다.** 사각형 스프라이트를 이어 붙여 지형을 만들지 않는다 (이음매에 걸림).
+
 ### `Assets/Scripts/` (2026-10-26)
 
 ```
@@ -51,6 +55,9 @@ Player/
   PlayerMotor           감지 + 속도 적용. 자체 FixedUpdate 없음
   PlayerController      enum 상태기계 (Grounded·Rising·Falling 구현, Dashing·Hurt·Dead 는 자리만)
   PlayerDebugHud        개발용 OnGUI 상태 표시
+  PlayerRoomTracker     겹친 방 목록 → 현재 방. RoomChanged(이전, 새) 이벤트
+World/
+  Room                  트리거 박스 = 방 범위 = 카메라 경계. SafePoint (decisions/004)
 Soul/
   SoulController        물리 없는 영혼. 플레이어 뒤 → 좌클릭 지점 이동·머묾 → 우클릭 순간 복귀.
                         화면 밖 이동 불가, 사정거리 이탈 시 즉시 재부착(오리아나식) (decisions/003)
@@ -65,6 +72,9 @@ Soul/
 - 입력 액션에 `Dash`(K · Left Shift · RB) 추가, `Attack` 에 J 추가. Status·Pause 는 4일차
 - **영혼 코드 작성 · 컴파일 확인 · 플레이 검증 안 됨.** 절차 [`docs/guides/soul-setup.md`](docs/guides/soul-setup.md).
   입력 `SoulMove`(좌클릭) · `SoulRecall`(우클릭) · `Point` 추가, **좌클릭은 `Attack` 에서 뺐다**
+- **맵 구조(Room · 방 카메라 경계) 코드 작성 · 컴파일 확인 · 플레이 검증 안 됨.** 절차 [`docs/guides/map-setup.md`](docs/guides/map-setup.md)
+- 2026-11-05 기준 디스크의 `SampleScene` 은 10/27 이후 저장되지 않았고 `PlayerTuning` 애셋·Ground 레이어가 없다
+  — 인스펙터 설정은 저장 후 다시 확인해야 한다
 
 ## 5. 작업 규칙
 

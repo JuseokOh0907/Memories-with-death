@@ -87,6 +87,9 @@ Scale 0.8 이 곱해져 0.8 × 1.6 이 되어 충돌체와 겹친다. 나중에 
 
 ## 3. Level
 
+> 이 절의 사각형 바닥은 1일차 이동 확인용이다. 실제 맵은 Tilemap 으로 바꾼다 —
+> [`map-setup.md`](map-setup.md). 사각형을 이어 붙이면 맞닿은 곳에서 플레이어가 걸릴 수 있다.
+
 전부 `2D Object > Sprites > Square` 로 만든 뒤 Layer 를 **Ground** 로 바꾸고 `BoxCollider2D` 를 붙인다.
 내장 Square 는 1 × 1 유닛이라 **Scale 이 곧 크기**다. BoxCollider2D 는 Size (1, 1) 그대로 둔다.
 
