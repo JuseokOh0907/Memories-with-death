@@ -44,11 +44,12 @@ namespace MetroidVania
             motor = GetComponent<PlayerMotor>();
             input = GetComponent<PlayerInputReader>();
 
+            // 애셋이 비어도 멈추지 않고 기본값으로 움직인다. 기본값은 저장되지 않으므로
+            // 수치를 조정하려면 Create > MetroidVania > Player Tuning 애셋을 만들어 연결한다.
             if (tuning == null)
             {
-                Debug.LogError($"{name}: PlayerTuning 이 비어 있다.", this);
-                enabled = false;
-                return;
+                Debug.LogWarning($"{name}: PlayerTuning 이 비어 있어 기본값으로 실행한다. 애셋을 만들어 연결할 것.", this);
+                tuning = ScriptableObject.CreateInstance<PlayerTuning>();
             }
             motor.Initialize(tuning);
         }
