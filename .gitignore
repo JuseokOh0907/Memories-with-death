@@ -124,3 +124,10 @@ desktop.ini
 
 # Excel 임시 잠금 파일
 ~$*
+
+# ---------------------------------------------------------------
+# 아트 스킬 파이프라인 (Tools/ArtSkills/setup.ps1 로 복원)
+# ---------------------------------------------------------------
+/Tools/ArtSkills/vendor/
+/Tools/ArtSkills/.venv/
+/Tools/ArtSkills/_work/

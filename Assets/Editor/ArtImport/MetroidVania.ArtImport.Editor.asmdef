@@ -1,0 +1,20 @@
+{
+    "name": "MetroidVania.ArtImport.Editor",
+    "rootNamespace": "MetroidVania.EditorTools",
+    "references": [
+        "Unity.2D.Sprite.Editor",
+        "Unity.2D.Tilemap.Extras",
+        "MetroidVania"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
