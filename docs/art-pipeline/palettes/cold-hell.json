@@ -1,0 +1,18 @@
+{
+  "name": "cold-hell",
+  "status": "candidate",
+  "date": "2026-11-06",
+  "ramps": {
+    "abyss": ["#0b0a14", "#15142a", "#221f3d", "#332c55"],
+    "ice":   ["#2b3f6b", "#3f6a9a", "#5fa0c8", "#93d3e6", "#d4f2f4"],
+    "frostStone": ["#2a2e3f", "#444a5e", "#646d82", "#8e97a8"],
+    "wraithFlame": ["#1f5a5c", "#3fa89a", "#8fe8c8", "#effff4"],
+    "frozenBlood": ["#3a0f22", "#7a1a33", "#c23a52"],
+    "bone": ["#a89c8e", "#d9cfbf", "#f4ede2"]
+  },
+  "fxPalettes": {
+    "wraithFire": ["#15142a", "#1f5a5c", "#3fa89a", "#8fe8c8", "#effff4", "#ffffff"],
+    "frostBurst": ["#221f3d", "#2b3f6b", "#3f6a9a", "#5fa0c8", "#93d3e6", "#d4f2f4"],
+    "bloodHit":   ["#15142a", "#3a0f22", "#7a1a33", "#c23a52", "#f4ede2"]
+  }
+}

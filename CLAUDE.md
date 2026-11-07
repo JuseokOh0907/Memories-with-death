@@ -61,6 +61,7 @@ Player/
   PlayerRoomTracker     겹친 방 목록 → 현재 방. RoomChanged(이전, 새) 이벤트
 World/
   Room                  트리거 박스 = 방 범위 = 카메라 경계 = 지도 한 칸. SafePoint (decisions/004)
+  AttachRuleTile        Solid 용 Rule Tile. 형제 Hazard·Deco 타일맵이 붙은 면을 붙음 면 스프라이트로 바꿈
 Soul/
   SoulController        물리 없는 영혼. 플레이어 뒤 → 좌클릭 지점 이동·머묾 → 우클릭 순간 복귀.
                         화면 밖 이동 불가, 사정거리 이탈 시 즉시 재부착(오리아나식) (decisions/003)
@@ -96,3 +97,15 @@ Soul/
   **절차서(Hierarchy 계층과 컴포넌트를 빠짐없이)** 를 `docs/guides/` 에 쓴다.
 - `.meta` 를 임의로 만들거나 지우지 않는다. 옮길 때는 파일과 쌍으로.
 - 결정은 `docs/decisions/` 에 남긴다.
+
+## 6. 아트 생성 파이프라인 (2026-11-06)
+
+- 게임 이미지(캐릭터·애니메이션·리깅·이펙트·배경)는 **`art-pipeline` 스킬부터** 시작한다. 기능별 스킬: `art-master` · `art-rig` · `art-animate` · `art-fx` · `art-postprocess` (`.claude/skills/`)
+- 카탈로그 [`docs/art-pipeline/README.md`](docs/art-pipeline/README.md), 후처리 지점 P1–P12 [`docs/art-pipeline/postprocess.md`](docs/art-pipeline/postprocess.md), 결정 [`docs/decisions/005-art-skill-pipeline.md`](docs/decisions/005-art-skill-pipeline.md)
+- 외부 도구 7종은 `Tools/ArtSkills/vendor/` (git 무시, `Tools/ArtSkills/setup.ps1` 로 복원). 그 안의 파일은 고치지 않는다
+- 이 PC 에는 이미지·영상 생성 경로(API 키, codex/grok CLI)가 없다 — 코드 기반 도구만 바로 동작한다
+- **타일 32px · PPU 32 확정 (2026-11-06).** 공통 팔레트는 후보(추운 지옥·불 지옥)만 있다
+- **추운 지옥 타일셋: Unity 컴파일·임포트·Build Tiles 확인 (2026-11-07).** Solid 는 `AttachRuleTile` — Hazard·Deco 가 붙으면 면 모양이 바뀐다(빈칸 해소, 씬에서 눈으로 확인). 플레이 검증은 안 됨. 절차 [`docs/guides/cold-hell-tiles-setup.md`](docs/guides/cold-hell-tiles-setup.md)
+  (`Assets/Art/Tiles/ColdHell/`, `Assets/Editor/ArtImport/`)
+- **불 지옥 타일셋: 추운 지옥과 같은 구조로 생성 · 임포트 · Build Tiles 확인 (2026-11-07).** 씬에 칠해 보기·플레이 검증은 안 됨.
+  절차 [`docs/guides/fire-hell-tiles-setup.md`](docs/guides/fire-hell-tiles-setup.md) (`Assets/Art/Tiles/FireHell/`)

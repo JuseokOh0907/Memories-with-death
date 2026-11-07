@@ -1,0 +1,19 @@
+{
+  "name": "fire-hell",
+  "status": "candidate",
+  "date": "2026-11-07",
+  "ramps": {
+    "soot":      ["#0e0807", "#1c0f0c", "#2c1611", "#40201a"],
+    "basalt":    ["#2e2522", "#4a3c37", "#6e5a52", "#9a857b"],
+    "lava":      ["#5a1206", "#962a0a", "#d4521a", "#f29433", "#ffd36a", "#fff3cf"],
+    "brimstone": ["#3e3410", "#7d6a1e", "#c9b246"],
+    "ash":       ["#5c5452", "#8f8783", "#c9c1ba"],
+    "wraith":    ["#2f5a6a", "#6fb7c4", "#d2f4f6"],
+    "charredBone": ["#8a7a68", "#c2b29c", "#ece0cc"]
+  },
+  "fxPalettes": {
+    "hellfire":  ["#1c0f0c", "#5a1206", "#962a0a", "#d4521a", "#f29433", "#ffd36a", "#fff3cf"],
+    "ashBurst":  ["#2c1611", "#5c5452", "#8f8783", "#c9c1ba"],
+    "wraithHit": ["#1c0f0c", "#2f5a6a", "#6fb7c4", "#d2f4f6", "#ffffff"]
+  }
+}

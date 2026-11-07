@@ -1,0 +1,111 @@
+{
+ "ppu": 32,
+ "autotile": "",
+ "collider": "sprite",
+ "flushOf": "",
+ "flushSide": "",
+ "tiles": [
+  {
+   "name": "magma-spikes-floor",
+   "x": 0,
+   "y": 0,
+   "w": 32,
+   "h": 32,
+   "mask": -1,
+   "variant": "",
+   "weight": 1,
+   "collision": [
+    {
+     "points": [
+      {
+       "x": -15.0,
+       "y": -2.0
+      },
+      {
+       "x": 15.0,
+       "y": -2.0
+      },
+      {
+       "x": 15.0,
+       "y": -16.0
+      },
+      {
+       "x": -15.0,
+       "y": -16.0
+      }
+     ]
+    }
+   ],
+   "sink": 4
+  },
+  {
+   "name": "magma-spikes-ceiling",
+   "x": 32,
+   "y": 0,
+   "w": 32,
+   "h": 32,
+   "mask": -1,
+   "variant": "",
+   "weight": 1,
+   "collision": [
+    {
+     "points": [
+      {
+       "x": -15.0,
+       "y": 16.0
+      },
+      {
+       "x": 15.0,
+       "y": 16.0
+      },
+      {
+       "x": 15.0,
+       "y": 2.0
+      },
+      {
+       "x": -15.0,
+       "y": 2.0
+      }
+     ]
+    }
+   ],
+   "sink": 0
+  },
+  {
+   "name": "lava-drips",
+   "x": 64,
+   "y": 0,
+   "w": 32,
+   "h": 32,
+   "mask": -1,
+   "variant": "",
+   "weight": 1,
+   "collision": [],
+   "sink": 0
+  },
+  {
+   "name": "brimstone-crystal",
+   "x": 96,
+   "y": 0,
+   "w": 32,
+   "h": 32,
+   "mask": -1,
+   "variant": "",
+   "weight": 1,
+   "collision": [],
+   "sink": 4
+  },
+  {
+   "name": "charred-bones",
+   "x": 128,
+   "y": 0,
+   "w": 32,
+   "h": 32,
+   "mask": -1,
+   "variant": "",
+   "weight": 1,
+   "collision": [],
+   "sink": 4
+  }
+ ]
+}
